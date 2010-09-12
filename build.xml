@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="jar" name="jatextmining">
+  <property name="lib.dir" value="${basedir}/lib" />
+  <path id="common-classpath">
+    <fileset dir="${lib.dir}">
+      <include name="*.jar" />
+    </fileset>
+    <fileset dir="${basedir}">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+  <property name="version" value="0.1" />
+  <property name="src.dir" location="${basedir}/src/net/" />
+  <property name="test.src.dir" location="${basedir}/src/test/" />
+  <property name="jatextmining.jar" value="jatextmining-${version}.jar" />
+
+  <target name="init">
+    <mkdir dir="build" />
+  </target>
+
+  <target name="compile" depends="init">
+    <javac srcdir="src/net" destdir="build" classpathref="common-classpath" />
+  </target>
+
+  <target name="jar" depends="compile">
+    <jar destfile="${jatextmining.jar}" basedir="build">
+      <manifest>
+        <attribute name="Main-Class"
+                   value="net/java/jatextmining/JaTextminingDriver"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="clean">
+    <delete file="${jatextmining.jar}" />
+    <delete dir="./build" />
+    <delete dir="./buildtest" />
+  </target>
+
+</project>
