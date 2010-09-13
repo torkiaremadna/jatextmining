@@ -1,4 +1,4 @@
-<wiki:toc max_depth="1" />
+<wiki:toc max_depth="3" />
 
 = はじめに =
 
@@ -29,7 +29,7 @@ jatextminingはHadoopを用いて大規模な日本語テキストデータを�
 
 == !GoSenの準備 ==
 
-  * 形態素解析に形態素解析器!MeCabのJavaクローンであるGoSenを用います
+  * 形態素解析に形態素解析器!MeCabのJavaクローンである!GoSenを用います
     * !GoSen配布ページ : http://itadaki.svn.sourceforge.net/viewvc/itadaki/GoSen/
   * !GoSenを/usr/local/!GoSenにインストールします
     * インストール先を任意のパスに変更する場合はjatextmining/conf/jatextmining.xmlのjatextmining.!GoSenの値をインストール先のパスに変更してください．
@@ -84,12 +84,37 @@ jatextminingはHadoopを用いて大規模な日本語テキストデータを�
 
 == 頻度分析 ==
 
-以下の流れで説明したいと思います．
-  # テキストの用意とHadoopへのコピー
-  # 頻度分析
+  * 複数の文書から，各単語の文書頻度をカウントします．(将来的には単なる頻度もサポートしたいとおもいます)
 
+  * 頻度分析のコマンド解説
+    * -i 入力ファイルのパスを指定します(HDFS上のパスです)
+    * -o 計算結果の出力先のパスを指定します(HDFS上のパス)
+    * (option) -w キーワードランキングをする際に，過去の文書のパスを指定します．(頻度の割合で重み付けをするため)
+    * (option) -p 抽出する単語の頻度を指定します．デフォルトはcompNoun(複合名詞)を抽出します．
+      * noun     : 名詞
+      * compNoun : 複合名詞
+      * adj      : 形容詞
+{{{
+$HADOOP_HOME/bin/hadoop jar jatextmining-0.1.jar wordcount
+
+Usage:
+  wordcount -i in -o out
+
+Option:
+  -w df_doc: Spefify the document path for document freaquency database.
+  -p [noun|compNoun|adj]: Specify the extracting pos.
+
+Example:
+  hadoop jar jatextmining-*.* wordcount -i input -o output
+  hadoop jar jatextmining-*.* wordcount -i input -o output -w df_doc -p noun
+}}}
+
+  * 以下に頻度分析の具体的な実行方法を説明したいと思います
   * テキストの用意とHadoopへのコピーをします
-  * サンプルのテキストデータとして以下のものをここでは使います
+  * サンプルのテキストデータとして以下のテキストをここでは使います
+
+  * 入力テキストフォーマット
+    * jatextminingでは一行一文書のフォーマットで入力ファイルを作成してください．  
 
 {{{
 emacs input1.txt
@@ -218,6 +243,35 @@ $HADOOP_HOME/bin/hadoop fs -cat ranking/* | sort -n -r -k 2
   * jatextminingは日本語のテキストに対して共起分析ができます
   * 共起分析とか簡単に言うと，１文書中に，単語のペアが出現した頻度をカウントしたもので，単語と単語の関連性などを分析する際に用います
   * 分析対象のデータは頻度分析で用いたinput1.txtを使いたいと思います
+
+  * 共起分析のコマンド解説
+    * -i 入力ファイルのパスを指定します(HDFS上のパスです)
+    * -o 計算結果の出力先のパスを指定します(HDFS上のパス)
+    * (option) -p 抽出する単語の頻度を指定します．デフォルトはcompNoun(複合名詞)を抽出します．
+      * noun     : 名詞
+      * compNoun : 複合名詞
+      * adj      : 形容詞
+    * (option) -t 重み付けの手法を指定します．デフォルトはΧ二乗を持ちます．
+      * freaq : 共起文書頻度
+      * chi   : Χ二乗検定
+      * mi    : 相互情報量
+    * (option) -r ２回目以降の分析で，分析対象の文書が同一で単に重み付けを変更して再計算をしたい場合は，中間ファイルを再利用して効率的解析します
+
+{{{
+$HADOOP_HOME/bin/hadoop jar jatextmining-0.1.jar cooccurrence
+
+Usage:
+  cooccurrence -i in -o out -t [chi|mi|freaq]
+
+Option:
+  -t [chi|mi|freaq]: Spefify the method for weighting co-occurrence.
+  -p [noun|compNoun|adj]: Sepecify the extracting words. The default is compNoun
+  -r: if given this option, reuse intermediate file.
+
+Example:
+  hadoop jar jatextmining-*.* cooccurrence -i input -o output -t chi
+  hadoop jar jatextmining-*.* cooccurrence -i input -o output -t chi -p noun
+}}}
 
   * 共起頻度(文書頻度)をカウントする
   ** input1.txtから１文書中で各単語が共起した回数をカウントします
