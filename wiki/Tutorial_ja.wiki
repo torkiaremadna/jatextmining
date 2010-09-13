@@ -33,6 +33,7 @@ jatextminingはHadoopを用いて大規模な日本語テキストデータを�
     * GoSen配布ページ : http://itadaki.svn.sourceforge.net/viewvc/itadaki/GoSen/
   * GoSenを/usr/local/GoSenにインストールします
     * インストール先を任意のパスに変更する場合はjatextmining/conf/jatextmining.xmlのjatextmining.GoSenの値をインストール先のパスに変更してください．
+
   {{{
   # GoSenのソースを入手する
   svn co  https://itadaki.svn.sourceforge.net/svnroot/itadaki/GoSen GoSen
@@ -66,7 +67,7 @@ jatextminingはHadoopを用いて大規模な日本語テキストデータを�
   * 任意のディレクトリにjatextminingをダウンロードしてjarファイルを生成してください
 
   {{{
-  # http://code.google.com/p/jatextmining/downloads/listから最新版をダウンロードしてください。
+  # http://code.google.com/p/jatextmining/downloads/listから最新版をダウンロードしてください
 
   # tarアーカイブを解凍します
   tar zxvf jatextmining-*.*.tar.gz
@@ -75,4 +76,16 @@ jatextminingはHadoopを用いて大規模な日本語テキストデータを�
   cd jatextmining-*.*
   ant
   }}}
+
+= 使い方 =
+
+  * わかりやすさのためにHadoopの使い方交えながら説明したいと思います
+  * 頻度分析と共起分析に分けて説明したいと思います
+
+== 頻度分析 ==
+
+   # テキストの用意とHadoopへのコピー
+   aaaa
+   # 頻度分析
+   # 結果の出力
 
