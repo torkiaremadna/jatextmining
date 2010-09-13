@@ -29,7 +29,7 @@ jatextminingはHadoopを用いて大規模な日本語テキストデータを�
 
 == GoSenの準備 ==
 
-  * 形態素解析に形態素解析器MeCabのJavaクローンであるGoSenを用います
+  * 形態素解析に形態素解析器!MeCabのJavaクローンであるGoSenを用います
     * GoSen配布ページ : http://itadaki.svn.sourceforge.net/viewvc/itadaki/GoSen/
   * GoSenを/usr/local/GoSenにインストールします
     * インストール先を任意のパスに変更する場合はjatextmining/conf/jatextmining.xmlのjatextmining.GoSenの値をインストール先のパスに変更してください．
@@ -84,8 +84,124 @@ jatextminingはHadoopを用いて大規模な日本語テキストデータを�
 
 == 頻度分析 ==
 
-   # テキストの用意とHadoopへのコピー
-   aaaa
-   # 頻度分析
-   # 結果の出力
+以下の流れで説明したいと思います．
+  # テキストの用意とHadoopへのコピー
+  # 頻度分析
 
+  * テキストの用意とHadoopへのコピーをします
+  * サンプルのテキストデータとして以下のものをここでは使います
+
+{{{
+emacs input1.txt
+私は今日、電車に乗って会社へ行きました。満員電車はとても暑かったです。
+私は昨日、車に乗って会社へ行きました。高速道路なので早く到着しました。
+彼は今日、電車に乗って会社へ行きました。満員電車だったので暑かったそうです。
+彼は昨日、車に乗って会社へ行きました。高速道路なので早く到着したそうです。
+彼女は、電車に乗らず、車で会社へ行きました。首都高速道路なので早く到着したそうです。
+}}}
+
+  * Hadoopにデータをコピーします
+
+{{{
+$HADOOP_HOME/bin/hadoop fs -put input1.txt input1.txt
+}}}
+
+  * コピーできてるか確認します
+
+{{{
+$HADOOP_HOME/bin/hadoop fs -cat input1.txt
+私は今日、電車に乗って会社へ行きました。満員電車はとても暑かったです。
+私は昨日、車に乗って会社へ行きました。高速道路なので早く到着しました。
+彼は今日、電車に乗って会社へ行きました。満員電車だったので暑かったそうです。
+彼は昨日、車に乗って会社へ行きました。高速道路なので早く到着したそうです。
+彼女は、電車に乗らず、車で会社へ行きました。首都高速道路なので早く到着したそうです。
+}}}
+
+  * 頻度分析をします
+  * input1.txtから各名詞の頻度をカウントします
+    * まず最初に名詞のカウントをします
+    * 次に複合名詞に頻度をカウントします(単純に名詞列をくっつけただけです)
+    * 次に形容詞のカウントをします
+
+{{{
+# input1.txtから名詞を抽出して，頻度をカウントした結果をoutput_nounに保存します
+$HADOOP_HOME/bin/hadoop jar jatextmining-0.1.jar wordcount -i input1.txt -o output_noun -p noun
+
+# 出力結果output_nounの内容を確認してみます
+$HADOOP_HOME/bin/hadoop fs -cat output_noun/* | sort -n -r -k 2
+会社    5.0
+の      4.0
+道路    3.0
+到着    3.0
+電車    3.0
+車      3.0
+高速    3.0
+そう    3.0
+満員    2.0
+彼      2.0
+私      2.0
+昨日    2.0
+今日    2.0
+彼女    1.0
+首都    1.0
+
+# input1.txtから複合名詞を抽出して，頻度をカウントした結果をoutput_compNounに保存します
+$HADOOP_HOME/bin/hadoop jar jatextmining-0.1.jar wordcount -i input1.txt -o output_compNoun -p compNoun
+
+# 出力結果output_compNounの内容を確認してみます
+$HADOOP_HOME/bin/hadoop fs -cat output_compNoun/* | sort -n -r -k 2
+会社    5.0
+の      4.0
+到着    3.0
+電車    3.0
+車      3.0
+そう    3.0
+満員電車        2.0
+彼      2.0
+私      2.0
+昨日    2.0
+今日    2.0
+高速道路        2.0
+彼女    1.0
+首都高速道路    1.0
+
+# input1.txtから形容詞を抽出して，頻度をカウントした結果をoutput_adjに保存します
+$HADOOP_HOME/bin/hadoop jar jatextmining-0.1.jar wordcount -i input1.txt -o output_adj -p adj
+
+# 出力結果output_compNounの内容を確認してみます
+$HADOOP_HOME/bin/hadoop fs -cat output_adj/* | sort -n -r -k 2
+早い    3.0
+暑い    2.0
+}}}
+
+  * jatextminingは頻度分析を用いて簡単なキーワードランキングを作成できます
+  * ランキングの生成方法は，ランキングを生成したい日の文書中の各頻度と，過去の文書中での頻度の割合をとってランキングを生成します．
+  * キーワードランキングを作成するには以下の2つの文書を入力します
+    * ランキング作成したい日の文書(today)
+    * 過去数日の文書(past)
+  * 今回は簡単のために先ほどのinput1.txtを2つのファイルに分割して実行してみたいと思います
+
+{{{
+# 二つの入力文書を作成します
+
+# ランキングを生成したい日の文書
+cat today
+彼は昨日、車に乗って会社へ行きました。高速道路なので早く到着したそうです。
+
+# 過去数日分の文書
+cat past 
+私は今日、電車に乗って会社へ行きました。満員電車はとても暑かったです。
+私は昨日、車に乗って会社へ行きました。高速道路なので早く到着しました。
+彼は今日、電車に乗って会社へ行きました。満員電車だったので暑かったそうです。
+彼女は、電車に乗らず、車で会社へ行きました。首都高速道路なので早く到着したそうです。
+
+# pastを用いてtodayからキーワードランキングを生成します
+$HADOOP_HOME/bin/hadoop jar jatextmining-0.1.jar wordcount -i today -o ranking -w past -p noun
+
+# 結果を確認します
+$HADOOP_HOME/bin/hadoop fs -cat ranking/* | sort -n -r -k 2
+彼      1.0
+昨日    1.0
+}}}
+
+上の例では，文書数が少なすぎるのであまりおもしろくありませんが，文書数が多くなればそれなりの結果になります．
