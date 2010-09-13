@@ -37,4 +37,11 @@
     <delete dir="./buildtest" />
   </target>
 
+  <target name="tar">
+    <tar destfile="${basedir}/jatextmining-${version}.tar.gz"
+         basedir="${basedir}"
+         compression="gzip"
+         />
+  </target>
+
 </project>
