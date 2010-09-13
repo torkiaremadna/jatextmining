@@ -54,4 +54,25 @@ jatextminingはHadoopを用いて大規模な日本語テキストデータを�
   が      (が)    助詞-格助詞-一般(2,3,1) ガ      ガ
   厳しい  (厳しい)        形容詞-自立(3,6,3)      キビシイ        キビシイ
   ．      (．)    記号-句点(6,7,1)        ．   
+
+  # /usr/localにコピーします
+  cd ../
+  sudo cp -R GoSen /usr/local/
   }}}
+
+== jatextminingの準備 ==
+
+  * HadoopとGoSenを使う準備ができたらjatextmining使えます
+  * 任意のディレクトリにjatextminingをダウンロードしてjarファイルを生成してください
+
+  {{{
+  # http://code.google.com/p/jatextmining/downloads/listから最新版をダウンロードしてください。
+
+  # tarアーカイブを解凍します
+  tar zxvf jatextmining-*.*.tar.gz
+
+  # jarファイルを生成します
+  cd jatextmining-*.*
+  ant
+  }}}
+
