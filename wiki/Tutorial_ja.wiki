@@ -1,13 +1,14 @@
-#summary One-sentence summary of this page.
+<wiki:toc max_depth="1" />
 
-= Introduction =
+= はじめに =
 
-Add your content here.
+jatextminingはHadoopを用いて大規模な日本語テキストデータを高速にテキストマイニングするためのツールです．
 
+順次実装ができしだい分析手法は追加して行きたいと思いますが，現在は以下の基本的な分析のみサポートしています．
+  * 頻度分析
+  * 共起分析
+    * Χ二乗検定
+    * 相互情報量
 
-= Details =
+= 前提条件 =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
