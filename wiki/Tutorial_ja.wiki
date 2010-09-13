@@ -12,3 +12,46 @@ jatextminingはHadoopを用いて大規模な日本語テキストデータを�
 
 = 前提条件 =
 
+  * jatextminingはLinuxのようなUnix系OS上での動作を前提としています
+  * jatextminingはHadoop上での動作を前提としています．Hadoopのクラスター環境を構築のうえでご利用ください．
+    * Hadoop 擬似分散環境(pseudo)でももちろん動作します．しかし遅いです．
+  * jatextminingは形態素解析にGoSenを用いています．あらかじめGoSenをコンパイルする必要があります．
+    * 将来的には形態素解析部分は抽象化したいと思います．
+
+= 準備 =
+
+== hadoopの環境構築 ==
+
+  * Hadoopの本家サイトからHadoopのパッケージをダウンロードし，Hadoop環境を構築してください
+    * http://hadoop.apache.org/
+  * 以下のサイトがHadoop環境の構築に役立ちます
+    * http://www.atmarkit.co.jp/fjava/special/distributed03/distributed03_1.html
+
+== GoSenの準備 ==
+
+  * 形態素解析に形態素解析器MeCabのJavaクローンであるGoSenを用います
+    * GoSen配布ページ : http://itadaki.svn.sourceforge.net/viewvc/itadaki/GoSen/
+  * GoSenを/usr/local/GoSenにインストールします
+    * インストール先を任意のパスに変更する場合はjatextmining/conf/jatextmining.xmlのjatextmining.GoSenの値をインストール先のパスに変更してください．
+  {{{
+  # GoSenのソースを入手する
+  svn co  https://itadaki.svn.sourceforge.net/svnroot/itadaki/GoSen GoSen
+
+  # コンパイルする
+  cd GoSen
+  ant
+
+  # 辞書をコンパイルする
+  cd testdata/dictionary/
+  ant
+
+  # 動作確認
+  cd ../../
+  java -cp $CLASSPATH:bin:gosen-1.0beta.jar examples.StringTaggerDemo testdata/dictionary/dictionary.xml
+  Please input Japanese sentence:
+  残暑が厳しい．
+  残暑    (残暑)  名詞-一般(0,2,2)        ザンショ        ザンショ
+  が      (が)    助詞-格助詞-一般(2,3,1) ガ      ガ
+  厳しい  (厳しい)        形容詞-自立(3,6,3)      キビシイ        キビシイ
+  ．      (．)    記号-句点(6,7,1)        ．   
+  }}}
