@@ -33,6 +33,8 @@ CDHの環境を作る流れを解説したいと思います．CDHを使うに�
   * CDH2の「Virtual Machine」と表示されているリンクからCDH2のtarアーカイブがダウンロードできます
     * 2010年9月14日現在では，ダウンロード先のURLは次のようになっています : http://cloudera-vm.s3.amazonaws.com/cloudera-training-0.3.3.tar.bz2
 
+[http://www.cloudera.com/downloads/ http://broomie.net/img/cdh2.png]
+
 
 = Details =
 
