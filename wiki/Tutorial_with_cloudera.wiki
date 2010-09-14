@@ -4,11 +4,34 @@
 
 = はじめに =
 
-jatextminingを使うにはHadoopの環境を整えなければなりません．しかし，複数のサーバを用意してHadoopの環境を構築するのは容易なことではありません．そこで，ここではjatextminingを簡単に試すためにCloudera社が提供するHadoopが使える環境が整えてあるVMWareイメージを使った方法を説明したいと思います．
+jatextminingを使うにはHadoopの環境を整えなければなりません．しかし，複数のサーバを用意してHadoopの環境を構築するのは容易なことではありません．そこで，WindowsのPCを用い，jatextminingを簡単に試すためにCloudera社が提供するHadoopが使える環境が整えてあるVMWareイメージを使った方法を説明したいと思います．
 
 分析の対象はwikipediaを用いて解説したいと思います．
 
 なお，VMWareを使った仮想環境では処理能力が著しく低下するため，もし本当に分析目的で使用する場合は，ご自身でHadoopの環境を構築されることをおすすめします．
+
+以下の手順で説明したいと思います．
+  # Cloudera’s Distribution For Hadoop(CDH)の用意
+  # wikipediaデータの取得
+  # jatextminingを用いたwikipediaの簡単な分析
+
+= Cloudera’s Distribution For Hadoop(CDH)の用意 =
+
+CDHの環境を作る流れを解説したいと思います．CDHを使うにはVMware Playerをまずインストールし，その後VMWare Player上でCDHを走らせます．以下順に流れを解説します．
+
+== VMware Playerのインストール ==
+  * VMware社のページからから，VMare playerのインストーラーをダウンロードし，インストールします．
+  * VMwareのインストーラーのダウンロードページはこちら : Cloudera’s Distribution For Hadoop
+  * ダウンロードにはユーザ登録が必要となります
+  * 2010年9月14日現在，VMware playerは無料で配布されています．もし有料との旨が表示されたら違ったものをダウンロードしようしている可能性があるのでお気をつけください．
+  * 以降手順にしたがってVMware playerのインストールをしてください
+
+== CDH2の取得 ==
+  * 繰り返しとなりますが，これはCloudera社が提供している，Hadoopを使える環境が整ったVMware用のUbutuのヴァーチャルマシンです
+  * 2010年9月14日現在では，ベータ版のCDH3がリリースされていますが，使うにはやや難があるめ，ここではCDH2(Stable release)を使います
+  * CDHのダウンロードページにアクセスします : http://www.cloudera.com/downloads/
+  * CDH2の「Virtual Machine」と表示されているリンクからCDH2のtarアーカイブがダウンロードできます
+    * 2010年9月14日現在では，ダウンロード先のURLは次のようになっています : http://cloudera-vm.s3.amazonaws.com/cloudera-training-0.3.3.tar.bz2
 
 
 = Details =
