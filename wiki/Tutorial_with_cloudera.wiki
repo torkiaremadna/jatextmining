@@ -1,8 +1,14 @@
 #The tutorial for jatextmining with Cloudera’s Distribution For Hadoop
 
-= Introduction =
+<wiki:toc max_depth="3" />
 
-Add your content here.
+= はじめに =
+
+jatextminingを使うにはHadoopの環境を整えなければなりません．しかし，複数のサーバを用意してHadoopの環境を構築するのは容易なことではありません．そこで，ここではjatextminingを簡単に試すためにCloudera社が提供するHadoopが使える環境が整えてあるVMWareイメージを使った方法を説明したいと思います．
+
+分析の対象はwikipediaを用いて解説したいと思います．
+
+なお，VMWareを使った仮想環境では処理能力が著しく低下するため，もし本当に分析目的で使用する場合は，ご自身でHadoopの環境を構築されることをおすすめします．
 
 
 = Details =

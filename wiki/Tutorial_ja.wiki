@@ -1,3 +1,5 @@
+#The tutorial for jatextmining in Japanese
+
 <wiki:toc max_depth="3" />
 
 = はじめに =
@@ -94,6 +96,7 @@ jatextminingはHadoopを用いて大規模な日本語テキストデータを�
       * noun     : 名詞
       * compNoun : 複合名詞
       * adj      : 形容詞
+
 {{{
 $HADOOP_HOME/bin/hadoop jar jatextmining-0.1.jar wordcount
 
