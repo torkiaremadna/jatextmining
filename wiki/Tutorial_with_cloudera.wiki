@@ -32,8 +32,79 @@ CDHの環境を作る流れを解説したいと思います．CDHを使うに�
   * CDHのダウンロードページにアクセスします : http://www.cloudera.com/downloads/
   * CDH2の「Virtual Machine」と表示されているリンクからCDH2のtarアーカイブがダウンロードできます
     * 2010年9月14日現在では，ダウンロード先のURLは次のようになっています : http://cloudera-vm.s3.amazonaws.com/cloudera-training-0.3.3.tar.bz2
-
+    * CDH2は約1.2GBあるのでダウンロードに時間がかかります
 [http://www.cloudera.com/downloads/ http://broomie.net/img/cdh2.png]
+  * ダウンロードが完了したらcloudera-training-0.3.3.tar.gz2を解凍します
+    * windowsでtar.gz2を解凍するにはいくつかの方法がありますが，私は以下のソフトウェアを使い解凍しました
+      * 7 ZIP : http://www.7-zip.org/
+      * Lhaplus : http://www7a.biglobe.ne.jp/~schezo/
+    * 解凍にもやや時間がかかります．bz2を解凍したら，tarを解凍しなければなりません．
+
+== CDH2の起動 ==
+  * VMware Playerを起動します
+  * VMware Playerが起動したら，「仮想マシンを開く」をクリックします
+  * 先ほど解凍したCDH2のディレクトリの中に，cloudera-training-0.3.3.vmxというファイルがあるので，それを選択して「開く」ボタンをクリックします
+    * 仮想マシンを開くときに「移動しました」「コピーしました」という選択画面が現れるので，通常は「コピーしました」を選択します
+    * CDH2の起動が開始されます
+
+=== CDH2の初期設定 ===
+  * ここからCDH2の設定について解説しますが，CDH2には日本語フォントが入っていないため，puttyなどを用いて外部のターミナルから使うことをお勧めします(もちろん日本語フォントを入れれば良いのですが．)
+  * CDH2はLinuxのディストリビューションとしてUbuntuを用いています．人によって初期設定はいろいろあるかもしれませんが，jatextminingを使う上で最低限設定しておいた方が良いだろうと思う事項を解説しておきます
+    * Cloudera社が提供してる資料もあるので，詳しくはそちらもご参照ください
+      * http://www.cloudera.com/downloads/virtual-machine/
+  * ログイン
+    * CDH2が起動したらログイン画面が現れるマス
+    * ログインユーザID training / ログインパスワード training でログインできます
+  * workspaceの更新する
+    * 上記のCloudera社の解説にもあるように，まずパッケージの更新をします
+{{{
+$ cd ~/git
+$ ./update-exercises --workspace
+}}}
+  * 日本語環境を整えます
+{{{
+sudo aptitude install language-pack-ja
+sudo dpkg-reconfigure locales
+}}}
+    * ついでにシェルの言語設定もja_JP.UTF-8にしておきます．
+    * .bashrc最後の方の行にLANG=ja_JP.UTF-8と追記して以下のコマンドを実行します(詳しい方はお好きな方法でやってください)
+{{{
+# LANG=ja_JP.UTF-8を追記する
+emacs .bashrc
+source .bashrc
+}}}
+  * subversionをインストールします
+{{{
+sudo apt-get install subversion
+}}}
+  * GoSenのダウンロードと設置
+{{{
+mkdir ~/tmp
+cd ~/tmp
+
+# GoSenのチェックアウト
+svn co https://itadaki.svn.sourceforge.net/svnroot/itadaki/GoSen GoSen
+
+# /usr/local/に設置．jatextminingではデフォルトの設定ではここに設置することになっていますが，configurationを変更すれば変更可能です
+sudo cp -R ~/tmp/GoSen /usr/local/
+
+# GoSenのビルド
+cd ~/tmp/GoSen
+
+# パッケージのビルド
+ant
+
+# 辞書のビルド
+cd testdata/dictionary/
+ant
+
+# 動作確認
+cd ~/tmp/GoSen/
+java -cp $CLASSPATH:bin:gosen-1.0beta.jar examples.StringTaggerDemo testdata/dictionary/dictionary.xml
+}}}
+  
+
+
 
 
 = Details =
