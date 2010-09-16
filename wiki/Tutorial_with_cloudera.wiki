@@ -47,7 +47,7 @@ CDHの環境を作る流れを解説したいと思います．CDHを使うに�
     * 仮想マシンを開くときに「移動しました」「コピーしました」という選択画面が現れるので，通常は「コピーしました」を選択します
     * CDH2の起動が開始されます
 
-=== CDH2の初期設定 ===
+== CDH2の初期設定 ==
   * ここからCDH2の設定について解説しますが，CDH2には日本語フォントが入っていないため，puttyなどを用いて外部のターミナルから使うことをお勧めします(もちろん日本語フォントを入れれば良いのですが．)
   * CDH2はLinuxのディストリビューションとしてUbuntuを用いています．人によって初期設定はいろいろあるかもしれませんが，jatextminingを使う上で最低限設定しておいた方が良いだろうと思う事項を解説しておきます
     * Cloudera社が提供してる資料もあるので，詳しくはそちらもご参照ください
@@ -56,12 +56,12 @@ CDHの環境を作る流れを解説したいと思います．CDHを使うに�
     * CDH2が起動したらログイン画面が現れるマス
     * ログインユーザID training / ログインパスワード training でログインできます
   * workspaceの更新する
-    * 上記のCloudera社の解説にもあるように，まずパッケージの更新をします
+    * 上記のCloudera社の解説にもあるように，まずパッケージのworkspaceを更新をします
 {{{
 $ cd ~/git
 $ ./update-exercises --workspace
 }}}
-  * 日本語環境を整えます
+=== 日本語環境を整えます ===
 {{{
 sudo aptitude install language-pack-ja
 sudo dpkg-reconfigure locales
@@ -73,10 +73,15 @@ sudo dpkg-reconfigure locales
 emacs .bashrc
 source .bashrc
 }}}
+
+=== GoSenのダウンロードと設置 ===
+
   * subversionをインストールします
+
 {{{
 sudo apt-get install subversion
 }}}
+
   * GoSenのダウンロードと設置
 {{{
 mkdir ~/tmp
@@ -102,6 +107,11 @@ ant
 cd ~/tmp/GoSen/
 java -cp $CLASSPATH:bin:gosen-1.0beta.jar examples.StringTaggerDemo testdata/dictionary/dictionary.xml
 }}}
+
+  * GoSenを/usr/local/にコピーする(jatextminingのコンフィグを変更すれば他の場所でも問題ありません)
+{{{
+sudo cp -R GoSen /usr/local/
+}}
 
   * GoSenのクラスパスをHadoopのコンフィグに追加する
 {{{
@@ -164,3 +174,140 @@ training@training-vm:~/tmp$ hadoop fs -put test.txt test.txt
 training@training-vm:~/tmp$ hadoop fs -cat test.txt
 今日は晴れています。
 }}}
+
+= jatextminingのダウンロードと使い方 =
+
+== jatextminigのダウンロードとビルド ==
+
+  * 簡単のためにGoSenの時と同様にsubversionを用いてcheck outします
+{{{
+training@training-vm:~/tmp$ svn checkout http://jatextmining.googlecode.com/svn/trunk/ jatextmining-read-only
+}}}
+
+  * jatextminingをビルドします
+{{{
+training@training-vm:~/tmp$ cd jatextmining-read-only/
+
+training@training-vm:~/tmp/jatextmining-read-only$ ant
+Buildfile: build.xml
+
+init:
+    [mkdir] Created dir: /home/training/tmp/jatextmining-read-only/build
+
+compile:
+    [javac] Compiling 18 source files to /home/training/tmp/jatextmining-read-only/build
+
+jar:
+      [jar] Building jar: /home/training/tmp/jatextmining-read-only/jatextmining-0.1.jar
+
+BUILD SUCCESSFUL
+Total time: 4 seconds
+}}}
+
+== wikipediaのダウンロードとHDFSへのコピー ==
+
+  * 実データを使って解析するには，データを用意しなければなりません．
+  * 今回は日本語wikipediaのアブストラクトを使ってみたいと思います．
+    * http://download.wikimedia.org/jawiki/latest/にある，jawiki-latest-abstract.xmlを用いたいと思います
+
+{{{
+# dataをおくディレクトリを作ります
+training@training-vm:~/tmp/jatextmining-read-only$ mkdir data
+training@training-vm:~/tmp/jatextmining-read-only$ cd data/
+
+# wikipediaのデータをダウンロードします(自分の環境では1時間ぐらいかかりました．．．)
+training@training-vm:~/tmp/jatextmining-read-only/data$ wget http://download.wikimedia.org/jawiki/latest/jawiki-latest-abstract.xml
+
+}}}
+
+  * XMLであるjawiki-latest-abstract.xmlからアブストラクトのテキスト部分のみを抽出しHDFSにputします
+    * ここでは簡単なjatextminingに格納されている簡単なperl script(jatextmining/script/abstract.pl)を用いて文書部分を抽出したいと思います
+    * jawiki-latest-abstract.xmlから１万エントリ分のアブストラクトを抽出します
+      * １万エントリ分しか使わないのはVMware上の処理のため，あまり多くのデータを処理すると時間がかかためです
+      * Ⅰ万エントリでもそこそこ傾向はつかめます
+      * 実際に大規模なHadoopクラスタを構築した場合は，全件のアブストラクトでも容易に処理できます
+
+{{{
+# jawiki-latest-abstract.xmlから１万エントリ分のアブストラクトを抽出します
+training@training-vm:~/tmp/jatextmining-read-only/data$ perl ../script/abstract.pl < jawiki-latest-abstract.xml > wiki_abstract
+
+# HDFSにwiki_abstractをコピーします
+training@training-vm:~/tmp/jatextmining-read-only/data$ hadoop fs -put wiki_abstract wiki_abstract
+}}}
+
+== jatextminingで頻度分析 ==
+
+  * jatextminingを用いてwiki_abstractのすべての文書から名詞の頻度を抽出します
+
+{{{
+# jatextminingのディレクトリに移動します
+training@training-vm:~/tmp/jatextmining-read-only$ ls
+AUTHORS  ChangeLog  LICENSE  build  build.xml  conf  data  jatextmining-0.1.jar  lib  script  src
+
+# jatextminingを用いてwiki_abstractから各名詞の頻度をカウントします
+training@training-vm:~/tmp/jatextmining-read-only$ hadoop jar jatextmining-0.1.jar wordcount -i wiki_abstract -o wiki_count -p noun
+10/09/16 04:43:44 INFO input.FileInputFormat: Total input paths to process : 1
+10/09/16 04:43:58 INFO mapred.JobClient: Running job: job_201009152351_0002
+10/09/16 04:43:59 INFO mapred.JobClient:  map 0% reduce 0%
+10/09/16 04:46:07 INFO mapred.JobClient:  map 49% reduce 0%
+10/09/16 04:46:10 INFO mapred.JobClient:  map 100% reduce 0%
+10/09/16 04:46:19 INFO mapred.JobClient:  map 100% reduce 100%
+10/09/16 04:46:21 INFO mapred.JobClient: Job complete: job_201009152351_0002
+10/09/16 04:46:21 INFO mapred.JobClient: Counters: 17
+10/09/16 04:46:21 INFO mapred.JobClient:   Job Counters
+10/09/16 04:46:21 INFO mapred.JobClient:     Launched reduce tasks=1
+10/09/16 04:46:21 INFO mapred.JobClient:     Launched map tasks=1
+10/09/16 04:46:21 INFO mapred.JobClient:     Data-local map tasks=1
+10/09/16 04:46:21 INFO mapred.JobClient:   FileSystemCounters
+10/09/16 04:46:21 INFO mapred.JobClient:     FILE_BYTES_READ=1877791
+10/09/16 04:46:21 INFO mapred.JobClient:     HDFS_BYTES_READ=1722620
+10/09/16 04:46:21 INFO mapred.JobClient:     FILE_BYTES_WRITTEN=3755614
+10/09/16 04:46:21 INFO mapred.JobClient:     HDFS_BYTES_WRITTEN=206171
+10/09/16 04:46:21 INFO mapred.JobClient:   Map-Reduce Framework
+10/09/16 04:46:21 INFO mapred.JobClient:     Reduce input groups=15877
+10/09/16 04:46:21 INFO mapred.JobClient:     Combine output records=0
+10/09/16 04:46:21 INFO mapred.JobClient:     Map input records=10000
+10/09/16 04:46:21 INFO mapred.JobClient:     Reduce shuffle bytes=1877791
+10/09/16 04:46:21 INFO mapred.JobClient:     Reduce output records=15877
+10/09/16 04:46:21 INFO mapred.JobClient:     Spilled Records=216248
+10/09/16 04:46:21 INFO mapred.JobClient:     Map output bytes=1661537
+10/09/16 04:46:21 INFO mapred.JobClient:     Combine input records=0
+10/09/16 04:46:21 INFO mapred.JobClient:     Map output records=108124
+10/09/16 04:46:21 INFO mapred.JobClient:     Reduce input records=108124
+}}}
+
+  * 結果を確認してみましょう(上位10件を表示してみます)
+{{{
+training@training-vm:~/tmp/jatextmining-read-only$ hadoop fs -cat wiki_count/* | sort -n -r -k 2 | head -n 10
+cat: Source must be a file.
+こと    1526.0
+年      1453.0
+月      1244.0
+日      1209.0
+日本    921.0
+的      777.0
+県      615.0
+市      554.0
+もの    505.0
+家      486.0
+}}}
+
+  * 形容詞の頻度を抽出することもできます
+{{{
+# 細かいところは省略して実行方法を示します
+
+training@training-vm:~/tmp/jatextmining-read-only$ hadoop jar jatextmining-0.1.jar wordcount -i wiki_abstract -o wiki_adj -p adj
+
+cat: Source must be a file.
+多い    225.0
+大きい  59.0
+広い    59.0
+長い    56.0
+よい    46.0
+こい    44.0
+高い    42.0
+くい    37.0
+強い    30.0
+古い    29.0
+}}}
+
