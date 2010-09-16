@@ -102,14 +102,65 @@ ant
 cd ~/tmp/GoSen/
 java -cp $CLASSPATH:bin:gosen-1.0beta.jar examples.StringTaggerDemo testdata/dictionary/dictionary.xml
 }}}
-  
 
+  * GoSenのクラスパスをHadoopのコンフィグに追加する
+{{{
+# Hadoopのコンフィグレーションを修正するためにユーザをhadoopに変更します
+sudo su hadoop
+}}}
+    * Hadoopのコンフィグレーションに以下の行を追加してください
+    * Hadoopのコンフィグレーションは/usr/lib/hadoop/conf/hadoop-env.sh です
+{{{
+L.12あたり
+# Extra Java CLASSPATH elements.  Optional.
+# export HADOOP_CLASSPATH=
+}}}
 
+この行を以下のように，修正してください．
 
+{{{
+# Extra Java CLASSPATH elements.  Optional.
+export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:/usr/local/GoSen/gosen-1.0beta.jar:/usr/local/GoSen/jisx0213-1.0.jar
+}}}
 
-= Details =
+  * コンフィグレーションの修正を反映させるためにHadoopクラスターを再起動します
+     * スーパーユーザーで実行してください
+{{{
+  # trainingユーザーの状態で
+  sudo su
+  for x in /etc/init.d/hadoop-0.20-* ; do ${x} stop ; done
+  for x in /etc/init.d/hadoop-0.20-* ; do ${x} start ; done
+}}}
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+  * 何かテキストをHDFSにputしてみます
+{{{
+# 適当なテキストファイルを作成します
+training@training-vm:~/tmp$ cat test.txt
+今日は晴れています。
+
+# putしてみます
+training@training-vm:~/tmp$ hadoop fs -put test.txt test.txt
+
+# 再起動に失敗するとsafemodeになってしまい，HDFSのファイル操作ができなくなってしまいます．
+# もし以下のようなメッセージが出た場合はsafemodeになってしまっています
+put: org.apache.hadoop.hdfs.server.namenode.SafeModeException: Cannot create file/user/training/test.txt. Name node is in safe mode.
+
+# safemodoを解除するには-safemode leaveを実行します
+training@training-vm:~/tmp$ hadoop dfsadmin -safemode leave
+Safe mode is OFF
+
+# また，再起動に失敗などすると以下のようなエラーが出てしまう場合もあります
+training@training-vm:~/tmp$ hadoop fs -put test.txt test.txt
+10/09/15 23:57:11 WARN hdfs.DFSClient: DataStreamer Exception: org.apache.hadoop.ipc.RemoteException: java.io.IOException: File /user/training/test.txt could only be replicated to 0 nodes, instead of 1
+        at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.getAdditionalBlock(FSNamesystem.java:1267)
+        at org.apache.hadoop.hdfs.server.namenode.NameNode.addBlock(NameNode.java:434)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:39)
+
+# このようなエラーが出た場合はhttp://localhost:50070にブラウザからアクセスすると治ることがあります
+
+# 無事putできたら内容を確認してみます
+
+training@training-vm:~/tmp$ hadoop fs -cat test.txt
+今日は晴れています。
+}}}
