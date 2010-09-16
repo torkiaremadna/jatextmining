@@ -108,10 +108,6 @@ cd ~/tmp/GoSen/
 java -cp $CLASSPATH:bin:gosen-1.0beta.jar examples.StringTaggerDemo testdata/dictionary/dictionary.xml
 }}}
 
-  * GoSenを/usr/local/にコピーする(jatextminingのコンフィグを変更すれば他の場所でも問題ありません)
-{{{
-sudo cp -R GoSen /usr/local/
-}}
 
   * GoSenのクラスパスをHadoopのコンフィグに追加する
 {{{
