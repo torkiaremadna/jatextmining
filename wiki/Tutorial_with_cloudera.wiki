@@ -74,7 +74,7 @@ emacs .bashrc
 source .bashrc
 }}}
 
-=== GoSenのダウンロードと設置 ===
+=== !GoSenのダウンロードと設置 ===
 
   * subversionをインストールします
 
@@ -82,7 +82,7 @@ source .bashrc
 sudo apt-get install subversion
 }}}
 
-  * GoSenのダウンロードと設置
+  * !GoSenのダウンロードと設置
 {{{
 mkdir ~/tmp
 cd ~/tmp
@@ -109,7 +109,7 @@ java -cp $CLASSPATH:bin:gosen-1.0beta.jar examples.StringTaggerDemo testdata/dic
 }}}
 
 
-  * GoSenのクラスパスをHadoopのコンフィグに追加する
+  * !GoSenのクラスパスをHadoopのコンフィグに追加する
 {{{
 # Hadoopのコンフィグレーションを修正するためにユーザをhadoopに変更します
 sudo su hadoop
@@ -175,7 +175,7 @@ training@training-vm:~/tmp$ hadoop fs -cat test.txt
 
 == jatextminigのダウンロードとビルド ==
 
-  * 簡単のためにGoSenの時と同様にsubversionを用いてcheck outします
+  * 簡単のために!GoSenの時と同様にsubversionを用いてcheck outします
 {{{
 training@training-vm:~/tmp$ svn checkout http://jatextmining.googlecode.com/svn/trunk/ jatextmining-read-only
 }}}
@@ -376,5 +376,5 @@ training@training-vm:~/tmp/jatextmining-read-only$ grep "^大阪  " wiki_co_chi
 京都245.0262
 }}}
 
-* χ二乗の方が，単純に頻度を計算するよりも，より関連性の強い単語が上位にきます．
+  * χ二乗の方が，単純に頻度を計算するよりも，より関連性の強い単語が上位にきます．
 
