@@ -27,7 +27,6 @@ import java.util.LinkedHashMap;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.filecache.DistributedCache;
-import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
@@ -86,8 +85,6 @@ public class CountReducer
                         Double.valueOf(wordCountBuf[1]));
             }
         }
-        Configuration conf = context.getConfiguration();
-        FileSystem hdfs    = FileSystem.get(conf);
     }
 
     @Override

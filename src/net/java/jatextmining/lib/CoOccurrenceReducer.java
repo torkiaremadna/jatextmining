@@ -37,7 +37,7 @@ public class CoOccurrenceReducer
 
     @Override
     public final void setup(Context context) {
-        Configuration conf = context.getConfiguration();
+        
     }
 
     @Override
@@ -45,7 +45,7 @@ public class CoOccurrenceReducer
         throws IOException, InterruptedException {
         Configuration conf = context.getConfiguration();
         MyPriorityQueue queue = new MyPriorityQueue(
-                Integer.valueOf(conf.get("jatextmining.numOfCoOccurrenceWord")));
+                Integer.valueOf(conf.get("jatextmining.numofaroundword")));
         for (Text coTokenBuf : values) {
             String[] coToken = coTokenBuf.toString().split("\t");
             queue.add(coToken[0], Double.valueOf(coToken[1]));
