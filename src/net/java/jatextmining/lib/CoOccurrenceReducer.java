@@ -45,7 +45,7 @@ public class CoOccurrenceReducer
         throws IOException, InterruptedException {
         Configuration conf = context.getConfiguration();
         MyPriorityQueue queue = new MyPriorityQueue(
-                Integer.valueOf(conf.get("jatextmining.numofaroundword")));
+                Integer.valueOf(conf.get("jatextmining.numOfCoOccurrenceWord")));
         for (Text coTokenBuf : values) {
             String[] coToken = coTokenBuf.toString().split("\t");
             queue.add(coToken[0], Double.valueOf(coToken[1]));
