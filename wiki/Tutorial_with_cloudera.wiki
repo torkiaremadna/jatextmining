@@ -15,6 +15,12 @@ jatextminingを使うにはHadoopの環境を整えなければなりません�
   # wikipediaデータの取得
   # jatextminingを用いたwikipediaの簡単な分析
 
+= 注意 =
+
+ここで解説する内容は，VMWare(ヴァーチャルマシン)上での動作となるため個々の処理に非常に時間がかかります．もし，Linux環境を所持している方は，単にLinuxにHadoopをダウンロードすればここの同等の内容を試せるので，VMwareは用いずにLinux上で試されることを強くお勧めします．
+
+このページでVMwareのヴァーチャルマシンを用いているのは，あくまでWindows環境しか用意できない方に，簡単にお試ししていただくためにCDHを使った例をあげさせてもらいました．
+
 = Cloudera’s Distribution For Hadoop(CDH)の用意 =
 
 CDHの環境を作る流れを解説したいと思います．CDHを使うにはVMware Playerをまずインストールし，その後VMWare Player上でCDHを走らせます．以下順に流れを解説します．
