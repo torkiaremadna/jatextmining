@@ -12,7 +12,7 @@ jatextminingはHadoopを用いて，大規模な日本語テキストデータ�
     * 日本語テキストから単語の共起(同じ文書中に単語が一緒に現れること)をカウントする
     * 重み付け
       * χ二乗検定
-      * 相互情報量
+     * 相互情報量
 
 = 前提 =
   * jatextminingはLinuxなどのUnix系OS環境での動作を前提としています
@@ -23,11 +23,10 @@ jatextminingはHadoopを用いて，大規模な日本語テキストデータ�
   * Windowsで簡単にお試ししたい場合はこちらを参照してください [http://code.google.com/p/jatextmining/wiki/Tutorial_with_cloudera Tutorial_with_cloudera]
   * FAQ [http://code.google.com/p/jatextmining/wiki/FAQ FAQ]
 
+= ライセンス =
 
+  * Apache License, Version 2.0
 
-= Details =
+= 作者 =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+  * Shunya KIMURA <brmtrain@gmail.com>
