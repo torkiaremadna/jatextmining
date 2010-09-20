@@ -12,7 +12,7 @@ jatextminingはHadoopを用いて大規模な日本語テキストデータを�
     * Χ二乗検定
     * 相互情報量
 
-まず簡単に試してみたいという方には，VMwareを用いてWindows上でのお試しを解せした[http://code.google.com/p/jatextmining/wiki/Tutorial_with_cloudera Tutorial_with_cloudera]をお勧めします．[http://code.google.com/p/jatextmining/wiki/Tutorial_with_cloudera Tutorial_with_cloudera]では，wikipediaのデータを用いた，簡単な実データを用いた使用法の解説もあります．
+まず簡単に試してみたいという方には，VMwareを用いてWindows上での試す方法を解説した[http://code.google.com/p/jatextmining/wiki/Tutorial_with_cloudera Tutorial_with_cloudera]をお勧めします．[http://code.google.com/p/jatextmining/wiki/Tutorial_with_cloudera Tutorial_with_cloudera]では，wikipediaのデータを用いた，簡単な実データを用いた使用法の解説もあります．
 
 = 前提条件 =
 
