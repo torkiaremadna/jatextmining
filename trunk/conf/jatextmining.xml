@@ -1,54 +1,56 @@
 <configuration>
   <property>
+    <description>The Number of Reducer task for Counter of jatextmining</description>
     <name>jatextmining.JaWordCounterReducerNum</name>
     <value>1</value>
   </property>
   <property>
+    <description>The Number of Reducer task for CoOccurrence of jatextmining</description>
     <name>jatextmining.JaCoOccurrenceCounterReducerNum</name>
     <value>1</value>
   </property>
   <property>
+    <description>The directory path for document freaquency db.</description>
     <name>jatextmining.dfdb</name>
     <value>word_dfdb</value>
   </property>
   <property>
+    <description>The Number of Reducer task for Counter of jatextmining</description>
     <name>jatextmining.cache</name>
     <value>data_cache</value>
   </property>
   <property>
+    <description>The file path for saving the number of line of input file for CoOccurrence.</description>
     <name>jatextmining.docNumPath</name>
     <value>data_cache/docNum</value>
   </property>
   <property>
+    <description>The file path for saving the number of line of input file for WordCount.</description>
     <name>jatextmining.docNum</name>
     <value>word_dfdb/docNum</value>
   </property>
   <property>
+    <description>The path for configuration file of Gosen.</description>
     <name>jatextmining.GoSen</name>
     <value>/usr/local/GoSen/testdata/dictionary/dictionary.xml</value>
   </property>
   <property>
-    <name>jatextmining.readbuffersize</name>
-    <value>4096</value>
-  </property>
-  <property>
-    <name>jatextmining.maxlinelength</name>
-    <value>200</value>
-  </property>
-  <property>
-    <name>jatextmining.numofaroundword</name>
+    <description>The number of words Co-Occurrence words for each words.</description>
+    <name>jatextmining.numOfCoOccurrenceWord</name>
     <value>50</value>
   </property>
   <property>
+    <description>The default hash size for stroing DF.</description>
     <name>jatextmining.dfHashSize</name>
     <value>100000</value>
   </property>
   <property>
-    <name>jatextmining.counterMimunNum</name>
+    <description>The default hash size for stroing DF.</description>
+    <name>jatextmining.counterMinimumLimitNum</name>
     <value>1</value>
   </property>
   <property>
-    <description>Spefify the extracting pos(noun,compNoun,adj,verb)</description>
+    <description>The default pos for extracting word(noun,compNoun,adj,verb)</description>
     <name>jatextmining.wordCountposSet</name>
     <value>compNoun</value>
   </property>

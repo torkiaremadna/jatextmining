@@ -109,7 +109,7 @@ public class CountReducer
                 e.printStackTrace();
             }
         }
-        countMinNum = Integer.valueOf(conf.get("jatextmining.counterMimunNum"));
+        countMinNum = Integer.valueOf(conf.get("jatextmining.counterMinimumLimitNum"));
     }
 
     @Override
