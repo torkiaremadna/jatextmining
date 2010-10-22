@@ -25,18 +25,7 @@ Linux環境が無く、まず簡単に試してみ
 
 = 準備 =
 
-== hadoopの環境構築 ==
 
-  * Hadoopの本家サイトからHadoopのパッケージをダウンロードし，Hadoop環境を構築してください
-    * http://hadoop.apache.org/common/
-  * 以下のサイトがHadoop環境の構築に役立ちます
-    * http://hadoop.apache.org/common/docs/current/
-    * http://www.atmarkit.co.jp/fjava/special/distributed03/distributed03_1.html
-  * Hadoopを初めて使う方は、1台のホストでHadoopを使うSigle Nodeで実行すると良いでしょう
-    * Single Nodeでセットアップするには以下のドキュメントを参照してください。
-    * http://hadoop.apache.org/common/docs/current/single_node_setup.html
-    * 基本的にはconf/core-site.xml、conf/core-site.xml、conf/core-site.xmlの3つConfigurationを修正すれば環境を構築できます。Configurationについては以下のドキュメントを参照してください。
-    * http://hadoop.apache.org/common/docs/current/single_node_setup.html#Configuration
 
 == !GoSenの準備 ==
 
@@ -71,6 +60,26 @@ Linux環境が無く、まず簡単に試してみ
   cd ../
   sudo cp -R GoSen /usr/local/
   }}}
+
+== hadoopの環境構築 ==
+
+  * Hadoopの本家サイトからHadoopのパッケージをダウンロードし，Hadoop環境を構築してください
+    * http://hadoop.apache.org/common/
+  * 以下のサイトがHadoop環境の構築に役立ちます
+    * http://hadoop.apache.org/common/docs/current/
+    * http://www.atmarkit.co.jp/fjava/special/distributed03/distributed03_1.html
+  * Hadoopを初めて使う方は、1台のホストでHadoopを使うSigle Nodeで実行すると良いでしょう
+    * Single Nodeでセットアップするには以下のドキュメントを参照してください。
+    * http://hadoop.apache.org/common/docs/current/single_node_setup.html
+    * 基本的にはconf/core-site.xml、conf/core-site.xml、conf/core-site.xmlの3つConfigurationを修正すれば環境を構築できます。Configurationについては以下のドキュメントを参照してください。
+    * http://hadoop.apache.org/common/docs/current/single_node_setup.html#Configuration
+  * hadoop-env.shの修正
+    * hadoopにGoSenなどのクラスパスを追加します
+    * hadoop-env.shに以下の行を追加してください(基本的には1行目に追加すればOKです)。
+
+{{{
+export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:/usr/local/GoSen/gosen-1.0beta.jar:/usr/local/GoSen/jisx0213-1.0.jar
+}}}
 
 == jatextminingの準備 ==
 
