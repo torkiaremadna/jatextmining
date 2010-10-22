@@ -32,6 +32,11 @@ Linux環境が無く、まず簡単に試してみ
   * 以下のサイトがHadoop環境の構築に役立ちます
     * http://hadoop.apache.org/common/docs/current/
     * http://www.atmarkit.co.jp/fjava/special/distributed03/distributed03_1.html
+  * Hadoopを初めて使う方は、1台のホストでHadoopを使うSigle Nodeで実行すると良いでしょう
+    * Single Nodeでセットアップするには以下のドキュメントを参照してください。
+    * http://hadoop.apache.org/common/docs/current/single_node_setup.html
+    * 基本的にはconf/core-site.xml、conf/core-site.xml、conf/core-site.xmlの3つConfigurationを修正すれば環境を構築できます。Configurationについては以下のドキュメントを参照してください。
+    * http://hadoop.apache.org/common/docs/current/single_node_setup.html#Configuration
 
 == !GoSenの準備 ==
 
