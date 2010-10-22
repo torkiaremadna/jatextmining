@@ -20,6 +20,7 @@ Linux環境が無く、まず簡単に試してみ
   * jatextminingはLinuxのようなUnix系OS上での動作を前提としています
   * jatextminingはHadoop上での動作を前提としています．Hadoopのクラスター環境を構築のうえでご利用ください．
     * Hadoop 擬似分散環境(pseudo)でももちろん動作します．しかし遅いです．
+    * Hadoopのヴァージョンは0.20.2での動作確認をしています．
   * jatextminingは形態素解析に!GoSenを用いています．あらかじめ!GoSenをコンパイルする必要があります．
     * 将来的には形態素解析部分は抽象化したいと思います．
 
