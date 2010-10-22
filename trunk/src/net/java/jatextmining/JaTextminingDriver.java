@@ -18,6 +18,8 @@
 
 package net.java.jatextmining;
 
+import net.java.jatextmining.util.TokenizerSample;
+
 import org.apache.hadoop.util.ProgramDriver;
 
 /**
@@ -41,6 +43,8 @@ public final class JaTextminingDriver {
                     + "program that counts the words from Japnese document.");
             driver.addClass("cooccurrence", JaCoOccurrence.class, "A map/reduce"
                     + " program that count the co-occurrence word.");
+            driver.addClass("tokenize", TokenizerSample.class, "A Sample of"
+                    + " tokenizing Japanese document with map/reduce");
             driver.driver(argv);
             exitCode = 0;
         } catch (Throwable e) {
