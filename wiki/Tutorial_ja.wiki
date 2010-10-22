@@ -12,7 +12,8 @@ jatextminingはHadoopを用いて大規模な日本語テキストデータを�
     * Χ二乗検定
     * 相互情報量
 
-Linux環境が無く、まず簡単に試してみたいという方には，VMwareを用いてWindows上での試す方法を解説した[http://code.google.com/p/jatextmining/wiki/Tutorial_with_cloudera Tutorial_with_cloudera]をで動作を試すことができます．[http://code.google.com/p/jatextmining/wiki/Tutorial_with_cloudera Tutorial_with_cloudera]では，wikipediaのデータを用いた，簡単な実データを用いた使用法の解説もあります．
+Linux環境が無く、まず簡単に試してみ
+たいという方には，VMwareを用いてWindows上での試す方法を解説した[http://code.google.com/p/jatextmining/wiki/Tutorial_with_cloudera Tutorial_with_cloudera]をで動作を試すことができます．[http://code.google.com/p/jatextmining/wiki/Tutorial_with_cloudera Tutorial_with_cloudera]では，wikipediaのデータを用いた，簡単な実データを用いた使用法の解説もあります．
 
 = 前提条件 =
 
@@ -27,8 +28,9 @@ Linux環境が無く、まず簡単に試してみたいという方には，VMw
 == hadoopの環境構築 ==
 
   * Hadoopの本家サイトからHadoopのパッケージをダウンロードし，Hadoop環境を構築してください
-    * http://hadoop.apache.org/
+    * http://hadoop.apache.org/common/
   * 以下のサイトがHadoop環境の構築に役立ちます
+    * http://hadoop.apache.org/common/docs/current/
     * http://www.atmarkit.co.jp/fjava/special/distributed03/distributed03_1.html
 
 == !GoSenの準備 ==
