@@ -12,7 +12,7 @@ jatextminingはHadoopを用いて大規模な日本語テキストデータを�
     * Χ二乗検定
     * 相互情報量
 
-まず簡単に試してみたいという方には，VMwareを用いてWindows上での試す方法を解説した[http://code.google.com/p/jatextmining/wiki/Tutorial_with_cloudera Tutorial_with_cloudera]をお勧めします．[http://code.google.com/p/jatextmining/wiki/Tutorial_with_cloudera Tutorial_with_cloudera]では，wikipediaのデータを用いた，簡単な実データを用いた使用法の解説もあります．
+Linux環境が無く、まず簡単に試してみたいという方には，VMwareを用いてWindows上での試す方法を解説した[http://code.google.com/p/jatextmining/wiki/Tutorial_with_cloudera Tutorial_with_cloudera]をで動作を試すことができます．[http://code.google.com/p/jatextmining/wiki/Tutorial_with_cloudera Tutorial_with_cloudera]では，wikipediaのデータを用いた，簡単な実データを用いた使用法の解説もあります．
 
 = 前提条件 =
 
@@ -345,4 +345,3 @@ $HADOOP_HOME/bin/hadoop fs -cat co_mi/*
 首都    彼女1.6094      到着0.5108      そう0.5108      道路0.5108      電車0.5108      高速0.5108
 高速    到着2.7081      首都2.7081      彼女2.7081      昨日2.7081      道路2.7081      そう2.3026
 }}}
-
